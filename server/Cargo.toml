@@ -1,0 +1,29 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# routing
+axum = { version = "0.7.5", features = ["tracing", "multipart"]}
+tower = { version = "0.5.0", features = ["limit"], default-features = false}
+tower-http = { version = "0.5.2", features = ["fs", "trace", "cors"], default_features = false }
+
+# serialization/deserialization
+serde = { version = "1.0.209", features = ["derive"] }
+
+# auth
+pwhash = "1.0.0"
+jsonwebtoken = { version = "9.3.0", default-features = false }
+
+# async
+tokio = { version = "1.40.0", features = ["full"] }
+
+# logging
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"]} 
+
+# others
+sqlx = { version = "0.8.1", features = ["runtime-tokio-rustls", "postgres", "uuid"] }
+thiserror = "1.0.63"
+uuid = { version = "1.10.0", features = ["serde", "v4"] }
