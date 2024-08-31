@@ -1,5 +1,8 @@
 use axum::{response::Html, routing::get, Router};
 
+mod config;
+mod errors;
+
 #[tokio::main]
 async fn main() {
     // build our application with a route

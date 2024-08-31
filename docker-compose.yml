@@ -1,0 +1,41 @@
+version: "3.9"
+
+volumes:
+  rgiombini-db-volume:
+    name: rgiombini-db-volume
+
+networks:
+  rgiombini-network:
+    name: rgiombini-network
+
+services:
+  rgiombini:
+    container_name: rgiombini
+    image: rgiombini
+    build: .
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:8000
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - rgiombini-network
+
+  db:
+    container_name: rgiombini_db
+    image: postgres:16.0-alpine
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    restart: unless-stopped
+    healthcheck:
+      test: pg_isready --username=${DATABASE_USER} --dbname=${DATABASE_NAME}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - rgiombini-db-volume:/var/lib/postgresql/data
+    networks:
+      - rgiombini-network
